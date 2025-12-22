@@ -76,7 +76,7 @@ router.get('/my-bookings', auth, async (req, res) => {
     const limit = parseInt(req.query.limit) || 0; // 0 means no limit
     const sort = { createdAt: -1 }; // Most recent first
 
-    let query = FacilityBooking.find({ user: req.user._id }).populate('facility').sort(sort);
+    let query = FacilityBooking.find({ user: req.user._id }).sort(sort);
 
     if (limit > 0) {
       query = query.limit(limit);
@@ -84,7 +84,21 @@ router.get('/my-bookings', auth, async (req, res) => {
 
     const bookings = await query;
     console.log('Found facility bookings:', bookings.length);
-    res.json(bookings);
+
+    // Populate facilities separately to avoid potential issues
+    const populatedBookings = await Promise.all(
+      bookings.map(async (booking) => {
+        try {
+          const populated = await FacilityBooking.findById(booking._id).populate('facility');
+          return populated;
+        } catch (populateError) {
+          console.error('Error populating facility booking:', populateError);
+          return booking;
+        }
+      })
+    );
+
+    res.json(populatedBookings);
   } catch (error) {
     console.error('Error fetching facility bookings:', error);
     res.status(500).json({ message: error.message });
