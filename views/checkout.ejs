@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Chateau Luxe</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    .checkout-header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .checkout-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+
+    .item-summary {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .total-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 15px;
+      padding: 2rem;
+    }
+
+    .payment-method {
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .payment-method:hover {
+      border-color: #667eea;
+      background: #f8f9ff;
+    }
+
+    .payment-method.selected {
+      border-color: #667eea;
+      background: #f0f2ff;
+    }
+
+    .razorpay-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 25px;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .razorpay-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="/images/logo.png" alt="Chateau Luxe" height="40">
+        Chateau Luxe
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/rooms">Rooms</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/food">Dining</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/facilities">Facilities</a>
+          </li>
+          <% if (user) { %>
+            <!-- User Profile Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user-circle me-2"></i><%= user.name || user.email %>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="/profile"><i class="fas fa-user me-2"></i>Profile</a></li>
+                <li><a class="dropdown-item" href="/my-bookings"><i class="fas fa-calendar-check me-2"></i>My Bookings</a></li>
+                <li><a class="dropdown-item" href="/my-orders"><i class="fas fa-utensils me-2"></i>My Orders</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+              </ul>
+            </li>
+          <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Register</a>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Checkout Header -->
+  <section class="checkout-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+          <h1 class="display-4 fw-bold mb-3">
+            <i class="fas fa-credit-card me-3"></i>
+            Checkout
+          </h1>
+          <p class="lead">Complete your booking and payment</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="row">
+      <!-- Order Summary -->
+      <div class="col-lg-8">
+        <div class="checkout-card card">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+              <i class="fas fa-list me-2"></i>
+              Order Summary
+            </h5>
+          </div>
+          <div class="card-body">
+            <div id="orderItems">
+              <!-- Items will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="checkout-card card">
+          <div class="card-header bg-success text-white">
+            <h5 class="mb-0">
+              <i class="fas fa-money-bill-wave me-2"></i>
+              Payment Method
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="payment-method selected" id="razorpayMethod">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-mobile-alt fa-2x me-3 text-primary"></i>
+                <div>
+                  <h6 class="mb-1">Razorpay (UPI, Cards, Net Banking)</h6>
+                  <p class="mb-0 text-muted">Secure payment gateway for Indian users</p>
+                </div>
+                <i class="fas fa-check-circle ms-auto text-success fs-4"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Total -->
+      <div class="col-lg-4">
+        <div class="checkout-card card total-section">
+          <div class="card-body text-center">
+            <h4 class="mb-4">Order Total</h4>
+            <div class="mb-3">
+              <p class="mb-1">Subtotal: <span id="subtotal">₹0</span></p>
+              <p class="mb-1">Tax (18% GST): <span id="tax">₹0</span></p>
+              <hr class="my-3">
+              <h3 class="mb-0">Total: <span id="total">₹0</span></h3>
+            </div>
+            <button class="btn razorpay-btn w-100 mt-4" onclick="initiatePayment()">
+              <i class="fas fa-lock me-2"></i>
+              Pay Now
+            </button>
+            <p class="small mt-3 opacity-75">
+              <i class="fas fa-shield-alt me-1"></i>
+              Your payment is secured with 256-bit SSL encryption
+            </p>
+          </div>
+        </div>
+
+        <!-- Terms and Conditions -->
+        <div class="checkout-card card">
+          <div class="card-body">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="termsCheck" checked>
+              <label class="form-check-label small" for="termsCheck">
+                I agree to the <a href="#" class="text-primary">Terms & Conditions</a> and <a href="#" class="text-primary">Privacy Policy</a>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+      <p>&copy; 2025 Chateau Luxe. All rights reserved.</p>
+      <img src="/images/footer-logo.png" alt="Footer Logo" width="50">
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Razorpay SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Checkout JavaScript -->
+  <script>
+    let cartItems = [];
+    let orderTotal = 0;
+
+    // Load cart items from session storage
+    function loadCartItems() {
+      const cartData = sessionStorage.getItem('checkoutCart');
+      if (!cartData) {
+        window.location.href = '/';
+        return;
+      }
+
+      cartItems = JSON.parse(cartData);
+      renderOrderItems();
+      calculateTotals();
+    }
+
+    // Render order items
+    function renderOrderItems() {
+      const orderItems = document.getElementById('orderItems');
+      orderItems.innerHTML = '';
+
+      cartItems.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        orderItems.innerHTML += `
+          <div class="item-summary">
+            <div class="row align-items-center">
+              <div class="col-md-2">
+                <img src="${item.image}" alt="${item.name}" class="img-fluid rounded">
+              </div>
+              <div class="col-md-6">
+                <h6 class="mb-1">${item.name}</h6>
+                <p class="text-muted small mb-0">${item.type.charAt(0).toUpperCase() + item.type.slice(1)}</p>
+                ${item.details.checkIn && item.details.checkOut ?
+                  `<p class="text-muted small mb-0">${item.details.checkIn} to ${item.details.checkOut}</p>` : ''}
+              </div>
+              <div class="col-md-2">
+                <span class="badge bg-primary">Qty: ${item.quantity}</span>
+              </div>
+              <div class="col-md-2 text-end">
+                <strong>₹${itemTotal.toLocaleString()}</strong>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // Calculate totals
+    function calculateTotals() {
+      orderTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const tax = orderTotal * 0.18; // 18% GST
+      const finalTotal = orderTotal + tax;
+
+      document.getElementById('subtotal').textContent = `₹${orderTotal.toLocaleString()}`;
+      document.getElementById('tax').textContent = `₹${tax.toLocaleString()}`;
+      document.getElementById('total').textContent = `₹${finalTotal.toLocaleString()}`;
+
+      return finalTotal;
+    }
+
+    // Initiate Razorpay payment
+    async function initiatePayment() {
+      if (!document.getElementById('termsCheck').checked) {
+        alert('Please accept the terms and conditions to proceed.');
+        return;
+      }
+
+      const finalTotal = calculateTotals();
+
+      try {
+        // Create order on server
+        const response = await fetch('/create-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: finalTotal,
+            items: cartItems
+          })
+        });
+
+        const orderData = await response.json();
+
+        if (!orderData.success) {
+          throw new Error(orderData.message || 'Failed to create order');
+        }
+
+        // Initialize Razorpay
+        const options = {
+          key: 'rzp_test_mock_key', // Development mode mock key
+          amount: orderData.order.amount,
+          currency: orderData.order.currency,
+          name: 'Chateau Luxe',
+          description: 'Hotel Booking & Services',
+          order_id: orderData.order.id,
+          handler: function (response) {
+            // Payment successful
+            verifyPayment(response, orderData.order.id);
+          },
+          prefill: {
+            name: '<%= user ? user.name : "" %>',
+            email: '<%= user ? user.email : "" %>',
+            contact: '<%= user ? user.phone : "" %>'
+          },
+          theme: {
+            color: '#667eea'
+          },
+          modal: {
+            ondismiss: function() {
+              showToast('Payment cancelled', 'warning');
+            }
+          }
+        };
+
+        // In development mode, always allow mock key
+        console.log('Using Razorpay key:', options.key);
+
+        const rzp = new Razorpay(options);
+
+        // In development mode, simulate payment success without opening Razorpay
+        console.log('Development mode: Simulating payment success');
+        setTimeout(() => {
+          verifyPayment({
+            razorpay_order_id: orderData.order.id,
+            razorpay_payment_id: 'mock_payment_' + Date.now(),
+            razorpay_signature: 'mock_signature'
+          }, orderData.order.id);
+        }, 1000); // Simulate 1 second payment processing
+
+      } catch (error) {
+        console.error('Payment error:', error);
+        showToast('Payment initialization failed: ' + error.message, 'danger');
+      }
+    }
+
+    // Verify payment
+    async function verifyPayment(paymentResponse, orderId) {
+      try {
+        const response = await fetch('/verify-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            razorpay_order_id: paymentResponse.razorpay_order_id,
+            razorpay_payment_id: paymentResponse.razorpay_payment_id,
+            razorpay_signature: paymentResponse.razorpay_signature,
+            orderId: orderId,
+            items: cartItems
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Clear cart and redirect to success page
+          localStorage.removeItem('chateauLuxeCart');
+          sessionStorage.removeItem('checkoutCart');
+          window.location.href = '/payment-success?order_id=' + orderId;
+        } else {
+          showToast('Payment verification failed', 'danger');
+        }
+
+      } catch (error) {
+        console.error('Verification error:', error);
+        showToast('Payment verification failed: ' + error.message, 'danger');
+      }
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'info') {
+      let toastContainer = document.getElementById('toastContainer');
+      if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toastContainer';
+        toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+        toastContainer.style.zIndex = '9999';
+        document.body.appendChild(toastContainer);
+      }
+
+      const toast = document.createElement('div');
+      toast.className = `toast align-items-center text-white bg-${type} border-0`;
+      toast.setAttribute('role', 'alert');
+      toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">${message}</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+      `;
+
+      toastContainer.appendChild(toast);
+      const bsToast = new bootstrap.Toast(toast);
+      bsToast.show();
+
+      toast.addEventListener('hidden.bs.toast', () => {
+        toast.remove();
+      });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadCartItems();
+    });
+
+    // Logout function
+    function logout() {
+      fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'same-origin'
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = '/';
+        } else {
+          showToast('Logout failed', 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Logout error:', error);
+        showToast('Logout failed', 'error');
+      });
+    }
+  </script>
+</body>
+</html>

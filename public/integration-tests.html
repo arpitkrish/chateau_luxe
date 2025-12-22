@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration Tests - Chateau Luxe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .test-container { background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 2rem; margin: 2rem auto; max-width: 800px; }
+        .test-result { margin: 0.5rem 0; padding: 0.5rem; border-radius: 10px; }
+        .test-pass { background: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; color: #15803d; }
+        .test-fail { background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #dc2626; }
+        .test-running { background: rgba(251, 191, 36, 0.1); border: 1px solid #f59e0b; color: #d97706; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-container">
+            <h1 class="text-center mb-4">🔬 Chateau Luxe Integration Tests</h1>
+            <p class="text-center text-muted mb-4">Browser-based integration testing for hotel management system</p>
+
+            <div class="d-flex justify-content-center mb-4">
+                <button id="runTests" class="btn btn-primary btn-lg">🚀 Run All Tests</button>
+                <button id="clearResults" class="btn btn-secondary btn-lg ms-2">🗑️ Clear Results</button>
+            </div>
+
+            <div id="testResults" class="mb-4">
+                <h3>Test Results:</h3>
+                <div id="resultsContainer"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>✅ Tests Passed: <span id="passedCount" class="text-success">0</span></h4>
+                </div>
+                <div class="col-md-6">
+                    <h4>❌ Tests Failed: <span id="failedCount" class="text-danger">0</span></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class TestRunner {
+            constructor() {
+                this.results = [];
+                this.passed = 0;
+                this.failed = 0;
+            }
+
+            addResult(testName, passed, message = '') {
+                this.results.push({ testName, passed, message, timestamp: new Date().toLocaleTimeString() });
+                if (passed) {
+                    this.passed++;
+                } else {
+                    this.failed++;
+                }
+                this.updateUI();
+            }
+
+            updateUI() {
+                const container = document.getElementById('resultsContainer');
+                const passedCount = document.getElementById('passedCount');
+                const failedCount = document.getElementById('failedCount');
+
+                passedCount.textContent = this.passed;
+                failedCount.textContent = this.failed;
+
+                container.innerHTML = this.results.map(result => `
+                    <div class="test-result ${result.passed ? 'test-pass' : 'test-fail'}">
+                        <strong>${result.testName}</strong> - ${result.timestamp}
+                        ${result.message ? `<br><small>${result.message}</small>` : ''}
+                    </div>
+                `).join('');
+            }
+
+            clear() {
+                this.results = [];
+                this.passed = 0;
+                this.failed = 0;
+                this.updateUI();
+            }
+
+            async runTest(testName, testFunction) {
+                try {
+                    const result = await testFunction();
+                    this.addResult(testName, result.passed, result.message);
+                } catch (error) {
+                    this.addResult(testName, false, `Error: ${error.message}`);
+                }
+            }
+        }
+
+        const testRunner = new TestRunner();
+
+        // Test Functions
+        async function testHomePageLoad() {
+            try {
+                const response = await fetch('/');
+                const html = await response.text();
+                const hasTitle = html.includes('Chateau Luxe');
+                const hasNavigation = html.includes('navbar') || html.includes('nav');
+                const hasRoomsLink = html.includes('/rooms') || html.includes('rooms');
+                const hasFacilitiesLink = html.includes('/facilities') || html.includes('facilities');
+                return {
+                    passed: response.ok && hasTitle && hasNavigation && hasRoomsLink && hasFacilitiesLink,
+                    message: response.ok ? 'Home page loaded with all navigation elements' : 'Failed to load home page'
+                };
+            } catch (error) {
+                return { passed: false, message: `Network error: ${error.message}` };
+            }
+        }
+
+        async function testRoomsAPI() {
+            try {
+                const response = await fetch('/api/rooms');
+                const data = await response.json();
+
+                const hasRooms = Array.isArray(data) && data.length > 0;
+                const hasRequiredFields = data.every(room =>
+                    room.name && room.price && room.capacity && room.image
+                );
+
+                return {
+                    passed: response.ok && hasRooms && hasRequiredFields,
+                    message: `Found ${data.length} rooms with complete data structure`
+                };
+            } catch (error) {
+                return { passed: false, message: `Rooms API error: ${error.message}` };
+            }
+        }
+
+        async function testFacilitiesAPI() {
+            try {
+                const response = await fetch('/api/facilities');
+                const data = await response.json();
+
+                const hasFacilities = Array.isArray(data) && data.length > 0;
+                const hasRequiredFields = data.every(facility =>
+                    facility.name && facility.price !== undefined && facility.capacity
+                );
+
+                return {
+                    passed: response.ok && hasFacilities && hasRequiredFields,
+                    message: `Found ${data.length} facilities with complete data structure`
+                };
+            } catch (error) {
+                return { passed: false, message: `Facilities API error: ${error.message}` };
+            }
+        }
+
+        async function testFoodAPI() {
+            try {
+                const response = await fetch('/api/food');
+                const data = await response.json();
+
+                const hasFood = Array.isArray(data) && data.length > 0;
+                const hasRequiredFields = data.every(food =>
+                    food.name && food.price && food.category
+                );
+
+                return {
+                    passed: response.ok && hasFood && hasRequiredFields,
+                    message: `Found ${data.length} food items with complete menu structure`
+                };
+            } catch (error) {
+                return { passed: false, message: `Food API error: ${error.message}` };
+            }
+        }
+
+        async function testAPIAvailability() {
+            try {
+                const endpoints = ['/api/rooms', '/api/food', '/api/facilities', '/api/auth/check'];
+                let successCount = 0;
+                let totalCount = endpoints.length;
+
+                for (const endpoint of endpoints) {
+                    try {
+                        const response = await fetch(endpoint);
+                        if (response.ok || response.status === 401) successCount++; // 401 is expected for auth check
+                    } catch (e) {
+                        // Continue to next endpoint
+                    }
+                }
+
+                return {
+                    passed: successCount > 0,
+                    message: `${successCount}/${totalCount} API endpoints accessible`
+                };
+            } catch (error) {
+                return { passed: false, message: `API availability test failed: ${error.message}` };
+            }
+        }
+
+        async function testLocalStorage() {
+            try {
+                // Test LocalStorage availability
+                const testKey = 'test_key_' + Date.now();
+                const testValue = 'test_value_' + Date.now();
+
+                localStorage.setItem(testKey, testValue);
+                const retrieved = localStorage.getItem(testKey);
+                localStorage.removeItem(testKey);
+
+                // Test complex object storage
+                const complexData = {
+                    user: 'test_user',
+                    timestamp: Date.now(),
+                    preferences: { theme: 'dark', language: 'en' }
+                };
+                const complexKey = 'complex_test_' + Date.now();
+                localStorage.setItem(complexKey, JSON.stringify(complexData));
+                const retrievedComplex = JSON.parse(localStorage.getItem(complexKey));
+                localStorage.removeItem(complexKey);
+
+                const complexValid = retrievedComplex && retrievedComplex.user === 'test_user';
+
+                return {
+                    passed: retrieved === testValue && complexValid,
+                    message: 'LocalStorage working correctly for simple and complex data'
+                };
+            } catch (error) {
+                return { passed: false, message: `LocalStorage error: ${error.message}` };
+            }
+        }
+
+        async function testSessionStorage() {
+            try {
+                // Test SessionStorage availability
+                const testKey = 'session_test_' + Date.now();
+                const testValue = 'session_value_' + Date.now();
+
+                sessionStorage.setItem(testKey, testValue);
+                const retrieved = sessionStorage.getItem(testKey);
+                sessionStorage.removeItem(testKey);
+
+                return {
+                    passed: retrieved === testValue,
+                    message: 'SessionStorage working correctly'
+                };
+            } catch (error) {
+                return { passed: false, message: `SessionStorage error: ${error.message}` };
+            }
+        }
+
+        async function testSSLConnection() {
+            try {
+                // Check if we're on HTTPS
+                const isHttps = window.location.protocol === 'https:';
+                const hasValidCert = document.location.protocol === 'https:' &&
+                                   !window.location.hostname.includes('localhost');
+
+                return {
+                    passed: isHttps,
+                    message: isHttps ?
+                        (hasValidCert ? 'Connected via HTTPS with valid certificate' : 'Connected via HTTPS (self-signed certificate)') :
+                        'Not using HTTPS (check SSL setup)'
+                };
+            } catch (error) {
+                return { passed: false, message: `SSL check failed: ${error.message}` };
+            }
+        }
+
+        async function testFacilitiesCaching() {
+            try {
+                // Clear any existing cache
+                localStorage.removeItem('facilities_cache');
+
+                // Try to load facilities page
+                const response = await fetch('/facilities');
+                const html = await response.text();
+
+                // Check if facilities page loads
+                const hasFacilitiesContent = html.includes('facilities') || html.includes('Facilities');
+                const hasCacheScript = html.includes('LocalStorage') || html.includes('cache');
+
+                return {
+                    passed: response.ok && hasFacilitiesContent,
+                    message: `Facilities page loads ${hasCacheScript ? 'with caching enabled' : 'successfully'}`
+                };
+            } catch (error) {
+                return { passed: false, message: `Facilities test failed: ${error.message}` };
+            }
+        }
+
+        async function testUserAuthentication() {
+            try {
+                // Test auth check endpoint
+                const response = await fetch('/api/auth/check');
+                const data = await response.json();
+
+                // Should return not authenticated for this test
+                const isCorrectResponse = response.status === 401 || (data && !data.authenticated);
+
+                return {
+                    passed: isCorrectResponse,
+                    message: 'Authentication check working correctly - user not authenticated as expected'
+                };
+            } catch (error) {
+                return { passed: false, message: `Auth test failed: ${error.message}` };
+            }
+        }
+
+        async function testPaymentIntegration() {
+            try {
+                // Test payment order creation endpoint (should fail without auth, but endpoint should exist)
+                const response = await fetch('/create-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: 1000, items: [] })
+                });
+
+                // Should return 401 (unauthorized) since no auth token
+                return {
+                    passed: response.status === 401,
+                    message: 'Payment integration endpoint accessible and properly secured'
+                };
+            } catch (error) {
+                return { passed: false, message: `Payment test failed: ${error.message}` };
+            }
+        }
+
+        async function testDatabaseConnectivity() {
+            try {
+                // Test multiple API endpoints to verify database connectivity
+                const endpoints = ['/api/rooms', '/api/facilities', '/api/food'];
+                let dbConnected = true;
+                let errorMessages = [];
+
+                for (const endpoint of endpoints) {
+                    try {
+                        const response = await fetch(endpoint);
+                        if (!response.ok && response.status !== 401) {
+                            dbConnected = false;
+                            errorMessages.push(`${endpoint}: ${response.status}`);
+                        }
+                    } catch (e) {
+                        dbConnected = false;
+                        errorMessages.push(`${endpoint}: ${e.message}`);
+                    }
+                }
+
+                return {
+                    passed: dbConnected,
+                    message: dbConnected ? 'Database connectivity verified across all endpoints' : `Database issues: ${errorMessages.join(', ')}`
+                };
+            } catch (error) {
+                return { passed: false, message: `Database connectivity test failed: ${error.message}` };
+            }
+        }
+
+        async function testResponsiveDesign() {
+            try {
+                // Check if Bootstrap classes are present
+                const response = await fetch('/');
+                const html = await response.text();
+
+                const hasBootstrap = html.includes('bootstrap') || html.includes('Bootstrap');
+                const hasResponsiveClasses = html.includes('col-md-') || html.includes('d-flex');
+                const hasMobileClasses = html.includes('d-none') || html.includes('d-block');
+
+                return {
+                    passed: hasBootstrap && hasResponsiveClasses,
+                    message: `Responsive design ${hasBootstrap ? 'enabled' : 'missing Bootstrap'}${hasMobileClasses ? ' with mobile optimizations' : ''}`
+                };
+            } catch (error) {
+                return { passed: false, message: `Responsive design test failed: ${error.message}` };
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('runTests').addEventListener('click', async () => {
+            const button = document.getElementById('runTests');
+            button.disabled = true;
+            button.innerHTML = '⏳ Running Tests...';
+
+            testRunner.clear();
+
+            // Run all tests
+            await testRunner.runTest('Home Page Load', testHomePageLoad);
+            await testRunner.runTest('Rooms API', testRoomsAPI);
+            await testRunner.runTest('Facilities API', testFacilitiesAPI);
+            await testRunner.runTest('Food API', testFoodAPI);
+            await testRunner.runTest('API Availability', testAPIAvailability);
+            await testRunner.runTest('LocalStorage', testLocalStorage);
+            await testRunner.runTest('SessionStorage', testSessionStorage);
+            await testRunner.runTest('SSL Connection', testSSLConnection);
+            await testRunner.runTest('Facilities Caching', testFacilitiesCaching);
+            await testRunner.runTest('User Authentication', testUserAuthentication);
+            await testRunner.runTest('Payment Integration', testPaymentIntegration);
+            await testRunner.runTest('Database Connectivity', testDatabaseConnectivity);
+            await testRunner.runTest('Responsive Design', testResponsiveDesign);
+
+            button.disabled = false;
+            button.innerHTML = '🚀 Run All Tests';
+        });
+
+        document.getElementById('clearResults').addEventListener('click', () => {
+            testRunner.clear();
+        });
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            // Small delay to ensure page is fully loaded
+            setTimeout(() => {
+                document.getElementById('runTests').click();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

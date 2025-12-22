@@ -1,0 +1,205 @@
+[2025-11-17T15:24:05.910Z] [ERROR] ReferenceError: C:\Users\dell\OneDrive\Desktop\backend 2nd ev\views\my-bookings.ejs:465
+    463|             </button>
+    464|           </li>
+ >> 465|           <% if (user) { %>
+    466|             <!-- User Profile Dropdown -->
+    467|             <li class="nav-item dropdown">
+    468|               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+user is not defined
+    at eval (eval at compile (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:15:8)
+    at my-bookings (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\response.js:909:7)
+    at C:\Users\dell\OneDrive\Desktop\backend 2nd ev\server.js:148:7
+    at Layer.handleRequest (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\router\lib\layer.js:152:17)
+[2025-11-17T15:24:08.218Z] [ERROR] ReferenceError: C:\Users\dell\OneDrive\Desktop\backend 2nd ev\views\facilities.ejs:503
+    501|             </button>
+    502|           </li>
+ >> 503|           <% if (user) { %>
+    504|             <!-- User Profile Dropdown -->
+    505|             <li class="nav-item dropdown">
+    506|               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+user is not defined
+    at eval (eval at compile (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:15:8)
+    at facilities (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\response.js:909:7)
+    at C:\Users\dell\OneDrive\Desktop\backend 2nd ev\server.js:133:7
+    at Layer.handleRequest (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\router\lib\layer.js:152:17)
+[2025-11-17T15:24:13.731Z] [ERROR] ReferenceError: C:\Users\dell\OneDrive\Desktop\backend 2nd ev\views\facilities.ejs:503
+    501|             </button>
+    502|           </li>
+ >> 503|           <% if (user) { %>
+    504|             <!-- User Profile Dropdown -->
+    505|             <li class="nav-item dropdown">
+    506|               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+user is not defined
+    at eval (eval at compile (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:15:8)
+    at facilities (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\response.js:909:7)
+    at C:\Users\dell\OneDrive\Desktop\backend 2nd ev\server.js:133:7
+    at Layer.handleRequest (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\router\lib\layer.js:152:17)
+[2025-11-17T15:24:22.124Z] [ERROR] ReferenceError: C:\Users\dell\OneDrive\Desktop\backend 2nd ev\views\facilities.ejs:503
+    501|             </button>
+    502|           </li>
+ >> 503|           <% if (user) { %>
+    504|             <!-- User Profile Dropdown -->
+    505|             <li class="nav-item dropdown">
+    506|               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+user is not defined
+    at eval (eval at compile (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:15:8)
+    at facilities (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\response.js:909:7)
+    at C:\Users\dell\OneDrive\Desktop\backend 2nd ev\server.js:133:7
+    at Layer.handleRequest (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\router\lib\layer.js:152:17)
+[2025-11-17T15:24:32.378Z] [ERROR] ReferenceError: C:\Users\dell\OneDrive\Desktop\backend 2nd ev\views\my-bookings.ejs:465
+    463|             </button>
+    464|           </li>
+ >> 465|           <% if (user) { %>
+    466|             <!-- User Profile Dropdown -->
+    467|             <li class="nav-item dropdown">
+    468|               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+user is not defined
+    at eval (eval at compile (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:15:8)
+    at my-bookings (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\response.js:909:7)
+    at C:\Users\dell\OneDrive\Desktop\backend 2nd ev\server.js:148:7
+    at Layer.handleRequest (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\router\lib\layer.js:152:17)
+[2025-11-17T15:24:40.545Z] [ERROR] ReferenceError: C:\Users\dell\OneDrive\Desktop\backend 2nd ev\views\my-orders.ejs:530
+    528|             </button>
+    529|           </li>
+ >> 530|           <% if (user) { %>
+    531|             <!-- User Profile Dropdown -->
+    532|             <li class="nav-item dropdown">
+    533|               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+user is not defined
+    at eval (eval at compile (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:15:8)
+    at my-orders (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\response.js:909:7)
+    at C:\Users\dell\OneDrive\Desktop\backend 2nd ev\server.js:153:7
+    at Layer.handleRequest (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\router\lib\layer.js:152:17)
+[2025-11-17T15:24:52.581Z] [ERROR] ReferenceError: C:\Users\dell\OneDrive\Desktop\backend 2nd ev\views\facilities.ejs:503
+    501|             </button>
+    502|           </li>
+ >> 503|           <% if (user) { %>
+    504|             <!-- User Profile Dropdown -->
+    505|             <li class="nav-item dropdown">
+    506|               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+user is not defined
+    at eval (eval at compile (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:15:8)
+    at facilities (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\response.js:909:7)
+    at C:\Users\dell\OneDrive\Desktop\backend 2nd ev\server.js:133:7
+    at Layer.handleRequest (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\router\lib\layer.js:152:17)
+[2025-11-17T15:26:51.751Z] [ERROR] ReferenceError: C:\Users\dell\OneDrive\Desktop\backend 2nd ev\views\my-bookings.ejs:465
+    463|             </button>
+    464|           </li>
+ >> 465|           <% if (user) { %>
+    466|             <!-- User Profile Dropdown -->
+    467|             <li class="nav-item dropdown">
+    468|               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+user is not defined
+    at eval (eval at compile (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:15:8)
+    at my-bookings (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\response.js:909:7)
+    at C:\Users\dell\OneDrive\Desktop\backend 2nd ev\server.js:148:7
+    at Layer.handleRequest (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\router\lib\layer.js:152:17)
+[2025-11-17T15:26:53.482Z] [ERROR] ReferenceError: C:\Users\dell\OneDrive\Desktop\backend 2nd ev\views\facilities.ejs:503
+    501|             </button>
+    502|           </li>
+ >> 503|           <% if (user) { %>
+    504|             <!-- User Profile Dropdown -->
+    505|             <li class="nav-item dropdown">
+    506|               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+user is not defined
+    at eval (eval at compile (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:15:8)
+    at facilities (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\response.js:909:7)
+    at C:\Users\dell\OneDrive\Desktop\backend 2nd ev\server.js:133:7
+    at Layer.handleRequest (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\router\lib\layer.js:152:17)
+[2025-11-17T15:29:46.094Z] [ERROR] ReferenceError: C:\Users\dell\OneDrive\Desktop\backend 2nd ev\views\facilities.ejs:503
+    501|             </button>
+    502|           </li>
+ >> 503|           <% if (user) { %>
+    504|             <!-- User Profile Dropdown -->
+    505|             <li class="nav-item dropdown">
+    506|               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+user is not defined
+    at eval (eval at compile (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:673:12), <anonymous>:15:8)
+    at facilities (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\express\lib\response.js:909:7)
+    at C:\Users\dell\OneDrive\Desktop\backend 2nd ev\server.js:133:7
+    at Layer.handleRequest (C:\Users\dell\OneDrive\Desktop\backend 2nd ev\node_modules\router\lib\layer.js:152:17)
+[2025-11-17T16:03:26.779Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-17T16:07:25.811Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-18T04:07:30.568Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-18T04:09:37.549Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-18T04:16:47.301Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-18T04:49:52.829Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-18T04:49:52.830Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-18T04:52:42.881Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-18T05:00:20.722Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-18T05:13:52.396Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-19T03:47:59.840Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-19T09:25:44.630Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-23T07:13:15.663Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-23T07:19:52.440Z] [ERROR] Uncaught Exception: read ECONNRESET
+[2025-11-23T07:31:23.469Z] [ERROR] Uncaught Exception: read ECONNRESET

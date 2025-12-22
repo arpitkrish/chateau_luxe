@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* Page Header with Luxury Design */
+    .bookings-header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #00d4ff 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 8s ease infinite;
+      color: white;
+      padding: 4rem 0 3rem;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+
+    .bookings-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.3) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+      z-index: 1;
+    }
+
+    .bookings-header .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .bookings-header h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, #fff, #f0f0f0, #fff);
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .bookings-header p {
+      font-size: 1.2rem;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      opacity: 0.9;
+    }
+
+    /* Booking Cards */
+    .booking-card {
+      background: var(--glass-bg, rgba(255, 255, 255, 0.95));
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .booking-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #1e3c72, #2a5298, #00d4ff);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .booking-card:hover::before {
+      opacity: 1;
+    }
+
+    .booking-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+
+    .booking-status {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-confirmed {
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+    }
+
+    .status-pending {
+      background: linear-gradient(135deg, #ffc107, #fd7e14);
+      color: white;
+    }
+
+    .status-cancelled {
+      background: linear-gradient(135deg, #dc3545, #fd7e14);
+      color: white;
+    }
+
+    .booking-header {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .booking-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+    }
+
+    .booking-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+
+    .booking-meta i {
+      margin-right: 0.5rem;
+      color: #1e3c72;
+    }
+
+    .booking-body {
+      padding: 1.5rem;
+    }
+
+    .booking-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem;
+      background: rgba(30, 60, 114, 0.05);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .detail-item:hover {
+      background: rgba(30, 60, 114, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .detail-item i {
+      font-size: 1.2rem;
+      color: #1e3c72;
+      margin-right: 0.75rem;
+      width: 20px;
+    }
+
+    .detail-item .label {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 0.25rem;
+    }
+
+    .detail-item .value {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    .booking-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn-action {
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-action::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-action:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #2a5298, #3a7bd5);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(30, 60, 114, 0.3);
+    }
+
+    .btn-outline-danger {
+      border: 2px solid #dc3545;
+      color: #dc3545;
+      background: transparent;
+    }
+
+    .btn-outline-danger:hover {
+      background: #dc3545;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--glass-bg, rgba(255, 255, 255, 0.95));
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      margin: 2rem 0;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      color: #1e3c72;
+      margin-bottom: 1.5rem;
+      opacity: 0.7;
+    }
+
+    .empty-state h3 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .empty-state p {
+      color: #6c757d;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Loading State */
+    .loading-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(30, 60, 114, 0.3);
+      border-left: 4px solid #1e3c72;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
+
+    /* Stats Cards */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: var(--glass-bg, rgba(255, 255, 255, 0.95));
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: #6c757d;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.9rem;
+    }
+
+    /* Filter Tabs */
+    .filter-tabs {
+      background: var(--glass-bg, rgba(255, 255, 255, 0.95));
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .filter-tabs .nav-link {
+      border: none;
+      border-radius: 10px;
+      padding: 0.75rem 1.5rem;
+      margin: 0 0.25rem;
+      font-weight: 600;
+      color: #6c757d;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .filter-tabs .nav-link.active {
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+    }
+
+    .filter-tabs .nav-link:hover:not(.active) {
+      background: rgba(30, 60, 114, 0.1);
+      color: #1e3c72;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .bookings-header h1 {
+        font-size: 2.5rem;
+      }
+
+      .booking-details {
+        grid-template-columns: 1fr;
+      }
+
+      .booking-actions {
+        justify-content: center;
+      }
+
+      .stats-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+
+    /* Animations */
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .stagger-animation {
+      animation: fadeInUp 0.8s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .stagger-animation:nth-child(1) { animation-delay: 0.1s; }
+    .stagger-animation:nth-child(2) { animation-delay: 0.2s; }
+    .stagger-animation:nth-child(3) { animation-delay: 0.3s; }
+    .stagger-animation:nth-child(4) { animation-delay: 0.4s; }
+    .stagger-animation:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Enhanced Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="/images/logo.png" alt="Chateau Luxe" height="40">
+        Chateau Luxe
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/rooms">Rooms</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/food">Dining</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/facilities">Facilities</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/contact">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/my-bookings">My Bookings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/my-orders">My Orders</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <!-- Enhanced Cart Button -->
+          <li class="nav-item">
+            <button class="btn btn-outline-light position-relative me-3" data-bs-toggle="modal" data-bs-target="#cartModal">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge" style="display: none;">0</span>
+            </button>
+          </li>
+          <% if (user) { %>
+            <!-- User Profile Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user-circle me-2"></i><%= user.name || user.email %>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="/profile"><i class="fas fa-user me-2"></i>Profile</a></li>
+                <li><a class="dropdown-item" href="/my-bookings"><i class="fas fa-calendar-check me-2"></i>My Bookings</a></li>
+                <li><a class="dropdown-item" href="/my-orders"><i class="fas fa-utensils me-2"></i>My Orders</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+              </ul>
+            </li>
+          <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Register</a>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Luxury Bookings Header -->
+  <section class="bookings-header">
+    <div class="container">
+      <h1 class="fade-in-up"><i class="fas fa-calendar-check me-3"></i>My Bookings</h1>
+      <p class="fade-in-up">Manage your room reservations and facility bookings with elegance</p>
+    </div>
+  </section>
+
+  <!-- Stats Overview -->
+  <div class="container">
+    <div class="stats-container">
+      <div class="stat-card stagger-animation">
+        <div class="stat-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="stat-value" id="totalBookings">0</div>
+        <div class="stat-label">Total Bookings</div>
+      </div>
+      <div class="stat-card stagger-animation">
+        <div class="stat-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-value" id="confirmedBookings">0</div>
+        <div class="stat-label">Confirmed</div>
+      </div>
+      <div class="stat-card stagger-animation">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-value" id="pendingBookings">0</div>
+        <div class="stat-label">Pending</div>
+      </div>
+      <div class="stat-card stagger-animation">
+        <div class="stat-icon">
+          <i class="fas fa-rupee-sign"></i>
+        </div>
+        <div class="stat-value" id="totalSpent">₹0</div>
+        <div class="stat-label">Total Spent</div>
+      </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <ul class="nav nav-pills justify-content-center" id="bookingFilter" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="all-tab" data-bs-toggle="pill" data-bs-target="#all-bookings" type="button" role="tab">All Bookings</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="rooms-tab" data-bs-toggle="pill" data-bs-target="#room-bookings" type="button" role="tab">Rooms</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="facilities-tab" data-bs-toggle="pill" data-bs-target="#facility-bookings" type="button" role="tab">Facilities</button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Bookings Content -->
+    <div class="tab-content" id="bookingContent">
+      <!-- All Bookings Tab -->
+      <div class="tab-pane fade show active" id="all-bookings" role="tabpanel">
+        <div id="allBookingsContainer">
+          <div class="loading-state">
+            <div class="loading-spinner"></div>
+            <h4>Loading your bookings...</h4>
+            <p>Please wait while we fetch your reservation details.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Room Bookings Tab -->
+      <div class="tab-pane fade" id="room-bookings" role="tabpanel">
+        <div id="roomBookingsContainer">
+          <div class="empty-state">
+            <i class="fas fa-bed"></i>
+            <h3>No Room Bookings</h3>
+            <p>You haven't booked any rooms yet. Start your luxury experience today!</p>
+            <a href="/rooms" class="btn btn-primary">Browse Rooms</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Facility Bookings Tab -->
+      <div class="tab-pane fade" id="facility-bookings" role="tabpanel">
+        <div id="facilityBookingsContainer">
+          <div class="empty-state">
+            <i class="fas fa-spa"></i>
+            <h3>No Facility Bookings</h3>
+            <p>Enhance your stay with our premium facilities and services.</p>
+            <a href="/facilities" class="btn btn-primary">Explore Facilities</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Cart Modal -->
+  <div class="modal fade" id="cartModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="fas fa-shopping-cart me-2"></i>
+            Your Dining Cart
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="cartItems" class="mb-3">
+            <!-- Cart items will be populated here -->
+          </div>
+          <div id="emptyCart" class="text-center py-5">
+            <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">Your cart is empty</h5>
+            <p class="text-muted">Add some delicious items to get started!</p>
+          </div>
+          <div id="cartSummary" class="d-none">
+            <hr>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">Total: <span id="cartTotal" class="text-primary fw-bold">₹0</span></h5>
+            </div>
+            <button class="btn btn-primary w-100 btn-order" onclick="checkoutCart()">
+              <i class="fas fa-credit-card me-2"></i>
+              Proceed to Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-light py-5 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <h5 class="text-uppercase fw-bold mb-3">Chateau Luxe</h5>
+          <p class="mb-3">Experience unparalleled luxury and elegance in the heart of sophistication. Your dream destination awaits.</p>
+          <div class="d-flex">
+            <a href="#" class="text-light me-3 fs-4"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="text-light me-3 fs-4"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-light me-3 fs-4"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-light fs-4"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-2 mb-4">
+          <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="/" class="text-light text-decoration-none">Home</a></li>
+            <li class="mb-2"><a href="/rooms" class="text-light text-decoration-none">Rooms</a></li>
+            <li class="mb-2"><a href="/food" class="text-light text-decoration-none">Dining</a></li>
+            <li class="mb-2"><a href="/facilities" class="text-light text-decoration-none">Facilities</a></li>
+            <li class="mb-2"><a href="/my-bookings" class="text-light text-decoration-none">My Bookings</a></li>
+            <li class="mb-2"><a href="/my-orders" class="text-light text-decoration-none">My Orders</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3 mb-4">
+          <h6 class="text-uppercase fw-bold mb-3">Contact Info</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>123 Luxury Avenue, Paradise City</li>
+            <li class="mb-2"><i class="fas fa-phone me-2"></i>+1 (555) 123-4567</li>
+            <li class="mb-2"><i class="fas fa-envelope me-2"></i>info@chateauluxe.com</li>
+          </ul>
+        </div>
+        <div class="col-lg-3 mb-4">
+          <h6 class="text-uppercase fw-bold mb-3">Newsletter</h6>
+          <p class="mb-3">Subscribe to receive exclusive offers and updates.</p>
+          <div class="input-group">
+            <input type="email" class="form-control" placeholder="Your email">
+            <button class="btn btn-outline-light" type="button">Subscribe</button>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="mb-0">&copy; 2024 Chateau Luxe. All rights reserved.</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <a href="#" class="text-light text-decoration-none me-3">Privacy Policy</a>
+          <a href="#" class="text-light text-decoration-none">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/my-bookings.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Logout function -->
+  <script>
+    function logout() {
+      fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'same-origin'
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = '/';
+        } else {
+          alert('Logout failed');
+        }
+      })
+      .catch(error => {
+        console.error('Logout error:', error);
+        alert('Logout failed');
+      });
+    }
+
+    // Check if we need to refresh bookings data
+    document.addEventListener('DOMContentLoaded', function() {
+      const shouldRefresh = sessionStorage.getItem('refreshBookings');
+      if (shouldRefresh) {
+        sessionStorage.removeItem('refreshBookings');
+        // Refresh after a short delay to ensure database is updated
+        setTimeout(() => {
+          // Reload the page to get fresh data
+          window.location.reload();
+        }, 1000);
+      }
+    });
+  </script>
+</body>
+</html>

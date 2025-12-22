@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Success - Chateau Luxe</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    .success-header {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+      padding: 3rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .success-card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      color: white;
+      font-size: 2rem;
+    }
+
+    .order-details {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 2rem;
+    }
+
+    .next-steps {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 15px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .btn-success-custom {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      border: none;
+      border-radius: 25px;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-success-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="/images/logo.png" alt="Chateau Luxe" height="40">
+        Chateau Luxe
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/rooms">Rooms</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/food">Dining</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/facilities">Facilities</a>
+          </li>
+          <% if (user) { %>
+            <!-- User Profile Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user-circle me-2"></i><%= user.name || user.email %>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="/profile"><i class="fas fa-user me-2"></i>Profile</a></li>
+                <li><a class="dropdown-item" href="/my-bookings"><i class="fas fa-calendar-check me-2"></i>My Bookings</a></li>
+                <li><a class="dropdown-item" href="/my-orders"><i class="fas fa-utensils me-2"></i>My Orders</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+              </ul>
+            </li>
+          <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Register</a>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Success Header -->
+  <section class="success-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+          <div class="success-icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <h1 class="display-4 fw-bold mb-3">Payment Successful!</h1>
+          <p class="lead">Thank you for choosing Chateau Luxe. Your booking has been confirmed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="row">
+      <!-- Order Confirmation -->
+      <div class="col-lg-8 mx-auto">
+        <div class="success-card card">
+          <div class="card-body text-center">
+            <h4 class="card-title mb-4">Order Confirmation</h4>
+            <div class="order-details">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6>Order ID</h6>
+                  <p class="text-primary fw-bold" id="orderId"><%= orderId %></p>
+                </div>
+                <div class="col-md-6">
+                  <h6>Payment Date</h6>
+                  <p id="paymentDate"><%= new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) %></p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-6">
+                  <h6>Payment Method</h6>
+                  <p><i class="fas fa-mobile-alt me-2"></i>Razorpay</p>
+                </div>
+                <div class="col-md-6">
+                  <h6>Status</h6>
+                  <p><span class="badge bg-success fs-6">Paid</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="next-steps">
+          <h5 class="mb-4">
+            <i class="fas fa-list-check me-2"></i>
+            What's Next?
+          </h5>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="d-flex align-items-start mb-3">
+                <i class="fas fa-envelope text-warning me-3 mt-1"></i>
+                <div>
+                  <h6 class="mb-1">Check Your Email</h6>
+                  <p class="mb-0 small">Confirmation details sent to your registered email</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex align-items-start mb-3">
+                <i class="fas fa-calendar-check text-info me-3 mt-1"></i>
+                <div>
+                  <h6 class="mb-1">View Bookings</h6>
+                  <p class="mb-0 small">Access your bookings in My Account</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex align-items-start mb-3">
+                <i class="fas fa-phone text-success me-3 mt-1"></i>
+                <div>
+                  <h6 class="mb-1">Contact Us</h6>
+                  <p class="mb-0 small">Need help? Call our concierge</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex align-items-start mb-3">
+                <i class="fas fa-star text-warning me-3 mt-1"></i>
+                <div>
+                  <h6 class="mb-1">Leave a Review</h6>
+                  <p class="mb-0 small">Share your experience with others</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center mt-4">
+          <a href="/my-bookings" class="btn btn-success-custom me-3">
+            <i class="fas fa-calendar me-2"></i>
+            View My Bookings
+          </a>
+          <a href="/" class="btn btn-outline-primary">
+            <i class="fas fa-home me-2"></i>
+            Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+      <p>&copy; 2025 Chateau Luxe. All rights reserved.</p>
+      <img src="/images/footer-logo.png" alt="Footer Logo" width="50">
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Success Page JavaScript -->
+  <script>
+    // Auto-refresh order details (in a real app, you'd fetch from server)
+    document.addEventListener('DOMContentLoaded', function() {
+    // Set flags to refresh data when user visits respective pages
+    sessionStorage.setItem('refreshProfileStats', 'true');
+    sessionStorage.setItem('refreshBookings', 'true');
+    sessionStorage.setItem('refreshOrders', 'true');      // Add some celebratory effects
+      setTimeout(() => {
+        showConfetti();
+      }, 1000);
+
+      // Auto-redirect to bookings after 30 seconds
+      let countdown = 30;
+      const countdownElement = document.createElement('div');
+      countdownElement.className = 'alert alert-info mt-4';
+      countdownElement.innerHTML = `
+        <i class="fas fa-clock me-2"></i>
+        You will be redirected to your bookings in <span id="countdown">${countdown}</span> seconds.
+        <button class="btn btn-sm btn-outline-primary ms-3" onclick="clearInterval(countdownInterval)">Stay Here</button>
+      `;
+
+      document.querySelector('.text-center.mt-4').appendChild(countdownElement);
+
+      const countdownInterval = setInterval(() => {
+        countdown--;
+        document.getElementById('countdown').textContent = countdown;
+
+        if (countdown <= 0) {
+          clearInterval(countdownInterval);
+          window.location.href = '/my-bookings';
+        }
+      }, 1000);
+
+      // Make countdown cancelable
+      countdownElement.querySelector('button').addEventListener('click', () => {
+        clearInterval(countdownInterval);
+        countdownElement.remove();
+      });
+    });
+
+    // Simple confetti effect
+    function showConfetti() {
+      const confettiContainer = document.createElement('div');
+      confettiContainer.style.position = 'fixed';
+      confettiContainer.style.top = '0';
+      confettiContainer.style.left = '0';
+      confettiContainer.style.width = '100%';
+      confettiContainer.style.height = '100%';
+      confettiContainer.style.pointerEvents = 'none';
+      confettiContainer.style.zIndex = '9999';
+      document.body.appendChild(confettiContainer);
+
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.style.position = 'absolute';
+        confetti.style.width = '10px';
+        confetti.style.height = '10px';
+        confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear`;
+        confettiContainer.appendChild(confetti);
+
+        setTimeout(() => {
+          confetti.remove();
+        }, 5000);
+      }
+
+      setTimeout(() => {
+        confettiContainer.remove();
+      }, 5000);
+    }
+
+    // Add confetti animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fall {
+        to {
+          transform: translateY(100vh) rotate(360deg);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+
+  <!-- Logout function -->
+  <script>
+    function logout() {
+      fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'same-origin'
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = '/';
+        } else {
+          alert('Logout failed');
+        }
+      })
+      .catch(error => {
+        console.error('Logout error:', error);
+        alert('Logout failed');
+      });
+    }
+  </script>
+</body>
+</html>
