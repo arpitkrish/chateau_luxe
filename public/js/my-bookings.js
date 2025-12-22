@@ -11,8 +11,22 @@ async function loadBookings() {
     console.log('Room response status:', roomResponse.status);
     console.log('Facility response status:', facilityResponse.status);
 
-    const roomBookings = await roomResponse.json();
-    const facilityBookings = await facilityResponse.json();
+    let roomBookings = [];
+    let facilityBookings = [];
+
+    if (roomResponse.ok) {
+      const data = await roomResponse.json();
+      roomBookings = Array.isArray(data) ? data : [];
+    } else {
+      console.error('Room bookings API failed:', roomResponse.status);
+    }
+
+    if (facilityResponse.ok) {
+      const data = await facilityResponse.json();
+      facilityBookings = Array.isArray(data) ? data : [];
+    } else {
+      console.error('Facility bookings API failed:', facilityResponse.status);
+    }
 
     console.log('Room bookings:', roomBookings);
     console.log('Facility bookings:', facilityBookings);

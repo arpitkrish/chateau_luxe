@@ -61,35 +61,12 @@ router.post('/book', auth, async (req, res) => {
 router.get('/my-bookings', auth, async (req, res) => {
   try {
     console.log('User ID:', req.user._id);
-    const limit = parseInt(req.query.limit) || 0; // 0 means no limit
-    const sort = { createdAt: -1 }; // Most recent first
-
-    let query = Booking.find({ user: req.user._id }).sort(sort);
-
-    if (limit > 0) {
-      query = query.limit(limit);
-    }
-
-    const bookings = await query;
+    const bookings = await Booking.find({ user: req.user._id }).populate('room').sort({ createdAt: -1 });
     console.log('Found bookings:', bookings.length);
-
-    // Populate rooms separately to avoid potential issues
-    const populatedBookings = await Promise.all(
-      bookings.map(async (booking) => {
-        try {
-          const populated = await Booking.findById(booking._id).populate('room');
-          return populated;
-        } catch (populateError) {
-          console.error('Error populating booking:', populateError);
-          return booking;
-        }
-      })
-    );
-
-    res.json(populatedBookings);
+    res.json(bookings || []);
   } catch (error) {
     console.error('Error fetching bookings:', error);
-    res.status(500).json({ message: error.message });
+    res.json([]); // Return empty array instead of error
   }
 });
 
