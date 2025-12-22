@@ -7,8 +7,6 @@ const session = require('express-session');
 const RedisStore = require('connect-redis').default;
 const { createClient } = require('redis');
 const path = require('path');
-const https = require('https');
-const fs = require('fs');
 const Logger = require('./utils/logger');
 const FileHandler = require('./utils/fileHandler');
 const connectDB = require('./config/database');
@@ -563,62 +561,17 @@ const PORT = process.env.PORT || 3000;
 // Export app for testing
 module.exports = app;
 
+const PORT = process.env.PORT || 3000;
+
+// Export app for testing
+module.exports = app;
+
 // Start server only if not in test environment
 if (process.env.NODE_ENV !== 'test') {
-  // Skip SSL in production (Render handles SSL)
-  if (process.env.NODE_ENV === 'production') {
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, '0.0.0.0', () => {
-      console.log(`🌐 Production server running on port ${PORT}`);
-      console.log(`🌐 Access your application at: https://your-render-app-url`);
-    });
-  } else {
-    // Development: try SSL first, fallback to HTTP
-    let sslOptions;
-    try {
-      sslOptions = {
-        key: fs.readFileSync(path.join(__dirname, 'certificates', 'key.pem')),
-        cert: fs.readFileSync(path.join(__dirname, 'certificates', 'cert.pem'))
-      };
-      console.log('✅ SSL certificates loaded successfully');
-    } catch (error) {
-      console.error('❌ Error loading SSL certificates:', error.message);
-      console.log('🔄 Falling back to HTTP server...');
-      const PORT = process.env.PORT || 3000;
-      app.listen(PORT, '0.0.0.0', () => {
-        console.log(`🔓 HTTP Server running on port ${PORT} (SSL certificates not found)`);
-        console.log(`🌐 Access your application at: http://localhost:${PORT}`);
-      });
-      process.exit(0);
-    }
-
-    // Start HTTPS server for development
-    const server = https.createServer(sslOptions, app);
-
-    server.on('listening', () => {
-      console.log(`🔒 HTTPS Server running securely on port ${PORT}`);
-      console.log(`🌐 Access your application at: https://localhost:${PORT}`);
-      console.log(`⚠️  Note: Your browser may show a security warning for self-signed certificate`);
-    });
-
-    server.on('error', (error) => {
-      console.error('❌ HTTPS Server error:', error.message);
-      console.error('Error code:', error.code);
-      if (error.code === 'EACCES') {
-        console.log('🔄 Port access denied, trying HTTP fallback...');
-        app.listen(3001, '0.0.0.0', () => {
-          console.log(`🔓 HTTP Server running on port 3001 (fallback)`);
-          console.log(`🌐 Access your application at: http://localhost:3001`);
-        });
-      } else {
-        console.log('🔄 Trying HTTP fallback due to SSL error...');
-        app.listen(3001, '0.0.0.0', () => {
-          console.log(`🔓 HTTP Server running on port 3001 (fallback)`);
-          console.log(`🌐 Access your application at: http://localhost:3001`);
-        });
-      }
-    });
-
-    server.listen(PORT, '0.0.0.0');
-  }
+  // Always use HTTP - Render handles SSL automatically
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌐 App is accessible at the provided Render URL`);
+    console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
 }
