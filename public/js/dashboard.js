@@ -143,7 +143,7 @@ function setupSimpleNavigation() {
 
 async function handleLogout() {
   try {
-    await fetch('/api/auth/logout', { method: 'POST' });
+    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
     window.location.href = '/';
   } catch (error) {
     console.error('Logout error:', error);
@@ -154,7 +154,7 @@ async function handleLogout() {
 // Load user profile information
 async function loadUserProfile() {
   try {
-    const response = await fetch('/api/auth/profile');
+    const response = await fetch('/api/auth/profile', { credentials: 'include' });
     if (response.ok) {
       const user = await response.json();
       document.getElementById('userName').textContent = user.name || 'User';
@@ -168,11 +168,11 @@ async function loadUserProfile() {
 async function loadDashboardStats() {
   try {
     // Load room bookings count
-    const roomBookingsResponse = await fetch('/api/rooms/my-bookings');
+    const roomBookingsResponse = await fetch('/api/rooms/my-bookings', { credentials: 'include' });
     const roomBookings = roomBookingsResponse.ok ? await roomBookingsResponse.json() : [];
 
     // Load facility bookings count
-    const facilityBookingsResponse = await fetch('/api/facilities/my-bookings');
+    const facilityBookingsResponse = await fetch('/api/facilities/my-bookings', { credentials: 'include' });
     const facilityBookings = facilityBookingsResponse.ok ? await facilityBookingsResponse.json() : [];
 
     // Calculate total bookings
@@ -180,14 +180,14 @@ async function loadDashboardStats() {
     document.getElementById('totalBookings').textContent = totalBookings;
 
     // Load orders count
-    const ordersResponse = await fetch('/api/food/my-orders');
+    const ordersResponse = await fetch('/api/food/my-orders', { credentials: 'include' });
     if (ordersResponse.ok) {
       const orders = await ordersResponse.json();
       document.getElementById('totalOrders').textContent = orders.length;
     }
 
     // Load user profile for member since date
-    const profileResponse = await fetch('/api/auth/profile');
+    const profileResponse = await fetch('/api/auth/profile', { credentials: 'include' });
     if (profileResponse.ok) {
       const user = await profileResponse.json();
       if (user.createdAt) {
@@ -215,7 +215,7 @@ async function loadRecentActivity() {
     let activities = [];
 
     // Get recent room bookings
-    const roomBookingsResponse = await fetch('/api/rooms/my-bookings?limit=3');
+    const roomBookingsResponse = await fetch('/api/rooms/my-bookings?limit=3', { credentials: 'include' });
     if (roomBookingsResponse.ok) {
       const roomBookings = await roomBookingsResponse.json();
       roomBookings.forEach(booking => {
@@ -230,7 +230,7 @@ async function loadRecentActivity() {
     }
 
     // Get recent facility bookings
-    const facilityBookingsResponse = await fetch('/api/facilities/my-bookings?limit=3');
+    const facilityBookingsResponse = await fetch('/api/facilities/my-bookings?limit=3', { credentials: 'include' });
     if (facilityBookingsResponse.ok) {
       const facilityBookings = await facilityBookingsResponse.json();
       facilityBookings.forEach(booking => {
@@ -245,7 +245,7 @@ async function loadRecentActivity() {
     }
 
     // Get recent orders
-    const ordersResponse = await fetch('/api/food/my-orders?limit=3');
+    const ordersResponse = await fetch('/api/food/my-orders?limit=3', { credentials: 'include' });
     if (ordersResponse.ok) {
       const orders = await ordersResponse.json();
       orders.forEach(order => {
@@ -343,7 +343,7 @@ function getStatusColor(status) {
 // Logout
 document.getElementById('logout').addEventListener('click', async () => {
   try {
-    await fetch('/api/auth/logout', { method: 'POST' });
+    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
     window.location.href = '/';
   } catch (error) {
     console.error('Logout error:', error);
@@ -412,6 +412,7 @@ function bookRoom(roomId) {
   fetch('/api/rooms/book', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify({ roomId, checkIn, checkOut, guests: parseInt(guests) })
   })
   .then(res => res.json())
@@ -635,6 +636,7 @@ function placeOrder() {
   fetch('/api/food/order', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify({ items: cart })
   })
   .then(res => res.json())
@@ -720,6 +722,7 @@ function bookFacility(facilityId) {
   fetch('/api/facilities/book', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify({ facilityId, date, timeSlot })
   })
   .then(res => res.json())
@@ -749,7 +752,7 @@ async function showMyBookings() {
     `;
 
     // Room bookings
-    const roomBookingsResponse = await fetch('/api/rooms/my-bookings');
+    const roomBookingsResponse = await fetch('/api/rooms/my-bookings', { credentials: 'include' });
     if (roomBookingsResponse.ok) {
       const roomBookings = await roomBookingsResponse.json();
       html += '<h4 class="mb-3">Room Bookings</h4>';
@@ -782,7 +785,7 @@ async function showMyBookings() {
     }
 
     // Facility bookings
-    const facilityBookingsResponse = await fetch('/api/facilities/my-bookings');
+    const facilityBookingsResponse = await fetch('/api/facilities/my-bookings', { credentials: 'include' });
     if (facilityBookingsResponse.ok) {
       const facilityBookings = await facilityBookingsResponse.json();
       html += '<h4 class="mb-3 mt-4">Facility Bookings</h4>';
@@ -824,7 +827,7 @@ async function showMyBookings() {
 // Show my orders
 async function showMyOrders() {
   try {
-    const response = await fetch('/api/food/my-orders');
+    const response = await fetch('/api/food/my-orders', { credentials: 'include' });
     const orders = await response.json();
 
     let html = `

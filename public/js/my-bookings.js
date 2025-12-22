@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', loadBookings);
 async function loadBookings() {
   try {
     const [roomResponse, facilityResponse] = await Promise.all([
-      fetch('/api/rooms/my-bookings'),
-      fetch('/api/facilities/my-bookings')
+      fetch('/api/rooms/my-bookings', { credentials: 'include' }),
+      fetch('/api/facilities/my-bookings', { credentials: 'include' })
     ]);
 
     const roomBookings = await roomResponse.json();
@@ -411,6 +411,6 @@ function showToast(message, type = 'info') {
 
 // Logout
 document.getElementById('logout')?.addEventListener('click', async () => {
-  await fetch('/api/auth/logout', { method: 'POST' });
+  await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
   window.location.href = '/';
 });
