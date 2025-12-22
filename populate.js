@@ -378,7 +378,7 @@ const populateDB = async () => {
       description: 'Outdoor pool with lounge chairs',
       price: 0,
       capacity: 50,
-      image: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=400&h=300&fit=crop&crop=center',
+      image: '/images/swimming.jpg',
       timeSlots: ['09:00-10:00', '10:00-11:00', '11:00-12:00', '14:00-15:00', '15:00-16:00', '16:00-17:00'],
       availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     },
@@ -405,7 +405,7 @@ const populateDB = async () => {
       description: 'Meeting room for events',
       price: 5000,
       capacity: 30,
-      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop&crop=center',
+      image: '/images/conference.jpg',
       timeSlots: ['09:00-10:00', '10:00-11:00', '11:00-12:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00'],
       availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     },
@@ -414,7 +414,7 @@ const populateDB = async () => {
       description: 'Secure parking lot',
       price: 200,
       capacity: 100,
-      image: 'https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=400&h=300&fit=crop&crop=center',
+      image: '/images/parking.jpg',
       timeSlots: ['00:00-23:59'],
       availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     }
