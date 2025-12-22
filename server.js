@@ -558,9 +558,6 @@ process.on('unhandledRejection', (reason, promise) => {
 
 const PORT = process.env.PORT || 3000;
 
-// Export app for testing
-module.exports = app;
-
 const PORT = process.env.PORT || 3000;
 
 // Export app for testing
