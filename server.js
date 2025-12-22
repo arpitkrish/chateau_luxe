@@ -318,6 +318,19 @@ app.get('/redis-showcase', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'redis-showcase.html'));
 });
 
+// Temporary populate endpoint for production setup
+app.get('/populate-db', async (req, res) => {
+  try {
+    // Import populate function
+    const populateDB = require('./populate');
+    await populateDB();
+    res.json({ success: true, message: 'Database populated successfully!' });
+  } catch (error) {
+    console.error('Populate error:', error);
+    res.status(500).json({ success: false, message: 'Failed to populate database' });
+  }
+});
+
 // Create Razorpay order
 app.post('/create-order', auth, async (req, res) => {
   try {

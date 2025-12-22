@@ -424,7 +424,12 @@ const populateDB = async () => {
   console.log('Facilities added');
 
   console.log('Database populated');
-  process.exit(0);
 };
 
-populateDB().catch(console.error);
+// Export the function for use in server.js
+module.exports = populateDB;
+
+// Only run if called directly (not when required)
+if (require.main === module) {
+  populateDB().catch(console.error);
+}
