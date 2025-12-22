@@ -72,6 +72,7 @@ router.post('/book', auth, async (req, res) => {
 // Get user facility bookings
 router.get('/my-bookings', auth, async (req, res) => {
   try {
+    console.log('User ID for facilities:', req.user._id);
     const limit = parseInt(req.query.limit) || 0; // 0 means no limit
     const sort = { createdAt: -1 }; // Most recent first
 
@@ -82,8 +83,10 @@ router.get('/my-bookings', auth, async (req, res) => {
     }
 
     const bookings = await query;
+    console.log('Found facility bookings:', bookings.length);
     res.json(bookings);
   } catch (error) {
+    console.error('Error fetching facility bookings:', error);
     res.status(500).json({ message: error.message });
   }
 });

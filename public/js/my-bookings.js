@@ -8,8 +8,14 @@ async function loadBookings() {
       fetch('/api/facilities/my-bookings', { credentials: 'include' })
     ]);
 
+    console.log('Room response status:', roomResponse.status);
+    console.log('Facility response status:', facilityResponse.status);
+
     const roomBookings = await roomResponse.json();
     const facilityBookings = await facilityResponse.json();
+
+    console.log('Room bookings:', roomBookings);
+    console.log('Facility bookings:', facilityBookings);
 
     // Update stats
     updateStats(roomBookings, facilityBookings);
