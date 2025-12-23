@@ -1249,7 +1249,7 @@
     function logout() {
       fetch('/api/auth/logout', {
         method: 'POST',
-        credentials: 'same-origin'
+        credentials: 'include'
       })
       .then(response => {
         if (response.ok) {
